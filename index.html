@@ -1,0 +1,405 @@
+<!doctype html>
+<!--
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Learn how to use the Firebase platform on the Web">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GymPal</title>
+
+  <!-- Disable tap highlight on IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+  <link rel="icon" href="images/favicon.ico">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="GymPal">
+  <meta name="theme-color" content="#4285F4">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GymPal">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#4285F4">
+
+  <!-- Tile icon for Win8 -->
+  <!-- <meta name="msapplication-TileColor" content="#3372DF">
+  <meta name="msapplication-navbutton-color" content="#303F9F"> -->
+
+  <!-- Material Design Components -->
+  <link rel="stylesheet"
+  href="https://unpkg.com/material-components-web@0.39.3/dist/material-components-web.min.css">
+  <script src="https://unpkg.com/material-components-web@0.39.3/dist/material-components-web.js"></script>
+  <script>
+      (function(d, h, m){
+          var js, fjs = d.getElementsByTagName(h)[0];
+          if (d.getElementById(m)){return;}
+          js = d.createElement(h); js.id = m;
+          js.onload = function(){
+              window.makerWidgetComInit({
+              position: "left",          
+              widget: "tulnvyfshgzreenp-svdvd7rnlcxlhbhb-grjz4uyqvh08cbjh"                
+          })};
+          js.src = "https://makerwidget.com/js/embed.js";
+          fjs.parentNode.insertBefore(js, fjs)
+      }(document, "script", "dhm"))
+  </script>
+
+  <!-- App Styling -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+<div>
+  <div class="header"></div>
+
+  <main></main>
+
+  <div class="dialogs"></div>
+
+  <div hidden class="template" id="header-base">
+      <header  class="mdc-toolbar mdc-toolbar--fixed">
+        <div id="title" class="mdc-toolbar__row mdc-layout-grid">
+          <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+            
+            <span class="mdc-toolbar__title" id="gym">💪GymPal</span>
+          </section>
+        </div>
+        <div id="section-header"></div>
+      </header>
+  </div>
+
+  <div hidden class="template" id="main-adjusted">
+    <div id="message-cards-container" class="mdc-layout-grid mdc-toolbar-fixed-adjust">
+      <div id="cards" class="mdc-layout-grid__inner"></div>
+    </div>
+  </div>
+
+  <div hidden class="template" id="main">
+    <div id="message-cards-container" class="mdc-layout-grid">
+      <div id="cards" class="mdc-layout-grid__inner"></div>
+    </div>
+  </div>
+
+  <div hidden class="template" id="no-ratings">
+      <div id="guy-container" class="mdc-toolbar-fixed-adjust">
+        <img class="guy" src="/images/guy_fireats.png" />
+        <div class="text">
+          This gym has no ratings.<br />
+        </div>
+        <br />
+      </div>
+    </div>
+
+  <div hidden class="template" id="no-results">
+    <div id="guy-container" class="mdc-toolbar-fixed-adjust">
+      <img class="guy" src="/images/guy_fireats.png" />
+      <div class="text">
+        There are no results for your those filters!
+      </div>
+    </div>
+  </div>
+
+  <div hidden class="template" id="filter-display">
+    <div class="mdc-toolbar mdc-layout-grid">
+      <div id="show-filters" >
+        <div id="active-filters">
+          <i class="material-icons">filter_list</i>
+          You're seeing <b data-fir-content="filter_description"></b>
+        </div>
+      </div>
+      <a class="btn btn-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSdEvRbueVsajuT93TW03Yroj7p_y86gYR0bhLSvVaw2L6qlRQ/viewform?usp=sf_link" role="button">Add a gym</a>
+    </div>
+  </div>
+
+  <div hidden class="template" id="restaurant-header">
+    <header class="mdc-layout__header mdc-layout__header--transparent" data-fir-style="backgroundImage:photo">
+
+      <div class="mdc-layout-grid" style="width: 100%;">
+          <div class="mdc-layout-grid__inner">
+              <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <a href="/" data-navigo class="material-icons" id="close">close</a>
+              </div>
+              <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12 info">
+                <div class="max_width_600">
+                  <h2 data-fir-content="name"></h2>
+                  <span class="price"></span>
+                  <div class="rating"></div>
+                  <div class="details">
+                    <span class="rating"></span>
+                    <span data-fir-content="category"></span>
+                    <span class="light">●</span>
+                    <span data-fir-content="city"></span>
+                    <span class="light">●</span>
+                    <span data-fir-content="daypass"></span>
+                    <span class="light">●</span>
+                    <span data-fir-content="publictransport"></span>
+                  </div>
+                  <button id="show-add-review" data-fir-click="show_add_review" class="mdc-button fab">
+                      <i class="material-icons">add</i>
+                    </button>
+                </div>
+              </div>
+          </div>
+        </div>
+    </header>
+  </div>
+
+  <div hidden class="template" id="rating"></div>
+  <span hidden class="template" id="price"></span>
+
+  <div hidden class="template mdc-layout-grid__cell--span-12" id="review-card">
+    <div class="review max_width_600">
+        <div class="header">
+          <div class="author">
+            <span class="light" data-fir-content="userName"></span>
+            <span class="light">●</span>
+            <span class="light" data-fir-content="daypass"></span>
+            <span class="light">●</span>
+            <span class="light" data-fir-content="transport"></span>
+          </div>
+          <div class="rating"></div>
+        </div>
+        <div data-fir-content="text"></div>
+    </div>
+  </div>
+
+  <div hidden class="template mdc-layout-grid__cell mdc-layout-grid__cell--span-4" id="restaurant-card">
+    <div class="location-card mdc-card mdc-shadow--2dp" data-fir-click="go_to_gym">
+      <div class="mdc-card__title" data-fir-style="backgroundImage:photo"></div>
+      <div class="mdc-card__supporting-text">
+        <h2 data-fir-content="name">...</h2>
+        <span class="info price"></span>
+        <div class="details">
+          <div class="rating"></div>
+        </div>
+        <div class="details">
+          <span class="info" data-fir-content="category"></span>
+          <span class="light">●</span>
+          <span class="info" data-fir-content="city"></span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <i hidden class="template material-icons" id="star-border-icon">star_border</i>
+  <i hidden class="template material-icons" id="star-icon">star</i>
+
+  <ul hidden class="template mdc-list" id="item-list">
+      <li class="mdc-list-item" data-mdc-auto-init="MDCRipple" data-fir-foreach="items" data-fir-content="~"></li>
+  </ul>
+
+  <ul hidden class="template mdc-list" id="all-filters-list">
+    <li id="show-page-category" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+      <i class="material-icons">rowing</i>
+      <span data-fir-if-not="category">Any Type of gym</span>
+      <b data-fir-content="category"></b>
+    </li>
+    <li id="show-page-city" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+      <i class="material-icons">location_on</i>
+      <span data-fir-if-not="city">Any Location</span>
+      <b data-fir-content="city"></b>
+    </li>
+    <li id="show-page-price" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+      <i class="material-icons">euro_symbol</i>
+      <span data-fir-if-not="price">Any Price</span>
+      <b data-fir-content="price"></b>
+    </li>
+    <li id="show-page-sort" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+      <i class="material-icons">sort</i>
+      <b data-fir-content="sort"></b>
+    </li>
+  </ul>
+
+  <aside id="dialog-filter-all" class="mdc-dialog">
+    <div class="mdc-dialog__surface">
+      <div class="page" id="page-all">
+        <header class="mdc-dialog__header">
+          <i class="material-icons">filter_list</i>
+          <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__header__title">
+            Filter
+          </h2>
+        </header>
+        <section class="mdc-dialog__body mdc-dialog__body--scrollable">
+          <div id="all-filters-list"></div>
+        </section>
+        <footer class="mdc-dialog__footer">
+          <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
+        </footer>
+      </div>
+      <div class="page" id="page-category">
+        <header class="mdc-dialog__header">
+          <i class="material-icons">rowing</i>
+          <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__header__title">
+            Category
+          </h2>
+        </header>
+        <section class="mdc-dialog__body mdc-dialog__body--scrollable">
+          <div id="category-list"></div>
+        </section>
+        <footer class="mdc-dialog__footer">
+          <button type="button" class="mdc-button mdc-dialog__footer__button back">Back</button>
+        </footer>
+      </div>
+      <div class="page" id="page-city">
+        <header class="mdc-dialog__header">
+          <i class="material-icons">location_on</i>
+          <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__header__title">
+            Location
+          </h2>
+        </header>
+        <section class="mdc-dialog__body mdc-dialog__body--scrollable">
+          <div id="city-list"></div>
+        </section>
+        <footer class="mdc-dialog__footer">
+          <button type="button" class="mdc-button mdc-dialog__footer__button back">Back</button>
+        </footer>
+      </div>
+      <div class="page" id="page-price">
+          <header class="mdc-dialog__header">
+            <i class="material-icons">euro_symbol</i>
+            <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__header__title">
+              Price
+            </h2>
+          </header>
+          <section class="mdc-dialog__body mdc-dialog__body--scrollable">
+            <ul class="mdc-list">
+              <li class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+                Any
+              </li>
+              <li class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+                €
+              </li>
+              <li class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+                €€
+              </li>
+              <li class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+                €€€
+              </li>
+              <li class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+                €€€€
+              </li>
+            </ul>
+          </section>
+        <footer class="mdc-dialog__footer">
+          <button type="button" class="mdc-button mdc-dialog__footer__button back">Back</button>
+        </footer>
+      </div>
+      <div class="page" id="page-sort">
+        <header class="mdc-dialog__header">
+          <i class="material-icons">sort</i>
+          <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__header__title">
+            Sort By
+          </h2>
+        </header>
+        <section class="mdc-dialog__body mdc-dialog__body--scrollable">
+          <ul class="mdc-list">
+            <li class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+              Rating
+            </li>
+            <li class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+              Reviews
+            </li>
+          </ul>
+        </section>
+        <footer class="mdc-dialog__footer">
+          <button type="button" class="mdc-button mdc-dialog__footer__button back">Back</button>
+        </footer>
+      </div>
+    </div>
+    <div class="mdc-dialog__backdrop"></div>
+  </aside>
+
+  <aside id="dialog-add-review"
+    class="mdc-dialog">
+    <div class="mdc-dialog__surface">
+      <header class="mdc-dialog__header">
+        <h2 id="my-mdc-dialog-label" class="mdc-dialog__header__title">
+          Tell others about this gym
+        </h2>
+      </header>
+      <section class="mdc-dialog__body">
+          <div class="star-input">
+            <i class="material-icons">star_border</i>
+            <i class="material-icons">star_border</i>
+            <i class="material-icons">star_border</i>
+            <i class="material-icons">star_border</i>
+            <i class="material-icons">star_border</i>
+          </div>
+          <textarea placeholder="What did you think of the place?" id="text"></textarea>
+          <p>What type of gym is it?</p>
+          <select id="vibe">
+            <option value="bodybuilding">Bodybuilding</option>
+            <option value="powerlifting">Powerlifting</option>
+            <option value="cardio">Cardio</option>
+          </select><br>
+        <p>Is there a daypass available?</p>  
+        <input type="radio" name="daypass" value="Daypass available">Yes
+        <input type="radio" name="daypass" value="No Daypass available">No<br>
+        <p>Is the gym reachable by public transport?</p>
+        <input type="radio" name="transport" value="Reachable by public transport">Yes
+        <input type="radio" name="transport" value="Not reachable by public transport">No<br>
+        <p>What did you pay?</p>
+        <select id="money">
+            <option value="€">€0-10</option>
+            <option value="€€">€10-25</option>
+            <option value="€€€">€25-50</option>
+            <option value="€€€€">€50+</option>
+          </select><br>
+      </section>
+      <footer class="mdc-dialog__footer">
+        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Cancel</button>
+        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Save</button>
+      </footer>
+    </div>
+    <div class="mdc-dialog__backdrop"></div>
+  </aside>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyB6famnW-PamjYU8oMXHJCS4gN-Ft38WVw",
+    authDomain: "fireeats-51d28.firebaseapp.com",
+    databaseURL: "https://fireeats-51d28.firebaseio.com",
+    projectId: "fireeats-51d28",
+    storageBucket: "fireeats-51d28.appspot.com",
+    messagingSenderId: "815098018185"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="/__/firebase/5.5.8/firebase-app.js"></script>
+<script src="/__/firebase/5.5.8/firebase-auth.js"></script>
+<script src="/__/firebase/5.5.8/firebase-firestore.js"></script>
+<script src="/__/firebase/init.js"></script>
+
+<script src="//unpkg.com/navigo@6"></script>
+
+<script src="/scripts/FriendlyEats.js"></script>
+<script src="/scripts/FriendlyEats.View.js"></script>
+<script src="/scripts/FriendlyEats.Mock.js"></script>
+<script src="/scripts/FriendlyEats.Data.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>
