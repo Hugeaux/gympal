@@ -30,7 +30,7 @@ FriendlyEats.prototype.viewHome = function() {
 
 FriendlyEats.prototype.viewList = function(filters, filter_description) {
   if (!filter_description) {
-    filter_description = 'any type of food with any price in any city.';
+    filter_description = 'any gym with any price in any city.';
   }
 
   var mainEl = this.renderTemplate('main-adjusted');
@@ -109,9 +109,11 @@ FriendlyEats.prototype.viewList = function(filters, filter_description) {
     }
   };
 
-  if (filters.city || filters.category || filters.price || filters.sort !== 'Rating' ) {
+  if (filters.city || filters.daypass || filters.publictransport ||filters.category || filters.price || filters.sort !== 'Rating' ) {
     this.getFilteredGyms({
       city: filters.city || 'Any',
+      daypass: filters.daypass || 'Any',
+      publictransport: filters.publictransport || 'Any',
       category: filters.category || 'Any',
       price: filters.price || 'Any',
       sort: filters.sort
@@ -234,6 +236,16 @@ FriendlyEats.prototype.initFilterDialog = function() {
   );
 
   this.replaceElement(
+    dialog.querySelector('#daypass-list'),
+    this.renderTemplate('item-list', { items: ['Any'].concat(this.data.daypass) })
+  );
+
+  this.replaceElement(
+    dialog.querySelector('#publictransport-list'),
+    this.renderTemplate('item-list', { items: ['Any'].concat(this.data.publictransport) })
+  );
+
+  this.replaceElement(
     dialog.querySelector('#city-list'),
     this.renderTemplate('item-list', { items: ['Any'].concat(this.data.cities) })
   );
@@ -292,7 +304,7 @@ FriendlyEats.prototype.updateQuery = function(filters) {
   var query_description = '';
 
   if (filters.category !== '') {
-    query_description += filters.category + ' places';
+    query_description += filters.category + ' gyms';
   } else {
     query_description += 'any gym';
   }
@@ -301,6 +313,18 @@ FriendlyEats.prototype.updateQuery = function(filters) {
     query_description += ' in ' + filters.city;
   } else {
     query_description += ' located anywhere';
+  }
+  
+  if (filters.daypass !== '') {
+    query_description += ' with ' + filters.daypass;
+  } else {
+    query_description += '';
+  }
+
+  if (filters.publictransport !== '') {
+    query_description += ' ' + filters.publictransport;
+  } else {
+    query_description += '';
   }
 
   if (filters.price !== '') {
