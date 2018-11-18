@@ -23,6 +23,8 @@ function FriendlyEats() {
     city: '',
     price: '',
     category: '',
+    daypass: '',
+    publictransport:'',
     sort: 'Rating'
   };
 
@@ -111,11 +113,20 @@ FriendlyEats.prototype.data = {
     'Amsterdam',
     'Rotterdam',
     'The Hague',
+    'Utrecht',
   ],
   categories: [
     'Powerlifting',
     'Bodybuilding',
-    'Cardio'
+    'Cardio',
+  ],
+  daypass: [
+    'Daypass available',
+    'No daypass available',
+  ],
+  publictransport: [
+    'Reachable by public transport',
+    'Not reachable by public transport',
   ],
   ratings: [
     {

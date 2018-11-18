@@ -100,9 +100,9 @@
 
   <div hidden class="template" id="no-ratings">
       <div id="guy-container" class="mdc-toolbar-fixed-adjust">
-        <img class="guy" src="/images/guy_fireats.png" />
+        <img class="guy" src="/images/strong.png" />
         <div class="text">
-          This gym has no ratings.<br />
+          This gym has no ratings yet, be the first!<br/>
         </div>
         <br />
       </div>
@@ -185,7 +185,7 @@
     <div class="location-card mdc-card mdc-shadow--2dp" data-fir-click="go_to_gym">
       <div class="mdc-card__title" data-fir-style="backgroundImage:photo"></div>
       <div class="mdc-card__supporting-text">
-        <h2 data-fir-content="name">...</h2>
+        <h2 id="truncatename" data-fir-content="name">...</h2>
         <span class="info price"></span>
         <div class="details">
           <div class="rating"></div>
@@ -210,17 +210,27 @@
   <ul hidden class="template mdc-list" id="all-filters-list">
     <li id="show-page-category" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
       <i class="material-icons">rowing</i>
-      <span data-fir-if-not="category">Any Type of gym</span>
+      <span data-fir-if-not="category">Type of gym</span>
       <b data-fir-content="category"></b>
+    </li>
+    <li id="show-page-daypass" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+      <i class="material-icons">calendar_today</i>
+      <span data-fir-if-not="daypass">Daypass</span>
+      <b data-fir-content="daypass"></b>
+    </li>
+    <li id="show-page-publictransport" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+      <i class="material-icons">subway</i>
+      <span data-fir-if-not="publictransport">Public Transport</span>
+      <b data-fir-content="publictransport"></b>
     </li>
     <li id="show-page-city" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
       <i class="material-icons">location_on</i>
-      <span data-fir-if-not="city">Any Location</span>
+      <span data-fir-if-not="city">Location</span>
       <b data-fir-content="city"></b>
     </li>
     <li id="show-page-price" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
       <i class="material-icons">euro_symbol</i>
-      <span data-fir-if-not="price">Any Price</span>
+      <span data-fir-if-not="price">Price</span>
       <b data-fir-content="price"></b>
     </li>
     <li id="show-page-sort" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
@@ -254,6 +264,34 @@
         </header>
         <section class="mdc-dialog__body mdc-dialog__body--scrollable">
           <div id="category-list"></div>
+        </section>
+        <footer class="mdc-dialog__footer">
+          <button type="button" class="mdc-button mdc-dialog__footer__button back">Back</button>
+        </footer>
+      </div>
+      <div class="page" id="page-daypass">
+        <header class="mdc-dialog__header">
+          <i class="material-icons">calendar_today</i>
+          <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__header__title">
+            Daypass
+          </h2>
+        </header>
+        <section class="mdc-dialog__body mdc-dialog__body--scrollable">
+          <div id="daypass-list"></div>
+        </section>
+        <footer class="mdc-dialog__footer">
+          <button type="button" class="mdc-button mdc-dialog__footer__button back">Back</button>
+        </footer>
+      </div>
+      <div class="page" id="page-publictransport">
+        <header class="mdc-dialog__header">
+          <i class="material-icons">subway</i>
+          <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__header__title">
+            Public Transport
+          </h2>
+        </header>
+        <section class="mdc-dialog__body mdc-dialog__body--scrollable">
+          <div id="publictransport-list"></div>
         </section>
         <footer class="mdc-dialog__footer">
           <button type="button" class="mdc-button mdc-dialog__footer__button back">Back</button>

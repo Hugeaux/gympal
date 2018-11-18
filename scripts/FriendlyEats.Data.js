@@ -55,6 +55,14 @@ FriendlyEats.prototype.getFilteredGyms = function(filters, renderer) {
     query = query.where('category', '==', filters.category);
   }
 
+  if (filters.daypass !== 'Any') {
+    query = query.where('daypass', '==', filters.daypass);
+  }
+
+  if (filters.publictransport !== 'Any') {
+    query = query.where('publictransport', '==', filters.publictransport);
+  }
+
   if (filters.city !== 'Any') {
     query = query.where('city', '==', filters.city);
   }
