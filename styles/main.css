@@ -563,3 +563,10 @@
   margin: auto;
   margin-top:20px;
 }
+
+#truncatename {
+  width:100% ;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -113,6 +113,7 @@ FriendlyEats.prototype.data = {
     'Amsterdam',
     'Rotterdam',
     'The Hague',
+    'Utrecht',
   ],
   categories: [
     'Powerlifting',
