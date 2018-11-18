@@ -235,6 +235,14 @@
    background-color: white !important;
  }
  
+ .mdc-button{
+   color:black !important;
+ }
+
+ .mdc-button::before{
+  background-color: #363636 !important; 
+ }
+
    header .mdc-button .material-icons {font-size: 22px;}
  
  #show-filters {
@@ -424,6 +432,7 @@
    height: 76px;
  }
 
+ /*Added for responsiveness*/
  .mdc-layout-grid{
    margin-top:auto !important;
  }
